@@ -2,12 +2,14 @@ import json, os, atexit
 
 try:
     from colorama import Style, Fore
-    print("A")
 except:
     print('\n\n"colorama" is nedded for the operation of this code!')
     print("Please install it by running: \"pip install colorama\"\n\n")
     exit()
 
+from utils import *
+
+#Resets text color and style when the code exits
 atexit.register(lambda: print(Style.RESET_ALL))
 
 os.system("clear")
@@ -17,21 +19,17 @@ try:
     with open("./followers_1.json") as file:
         followers = json.load(file)
 except FileNotFoundError:
-    print(f"{Fore.RED}{Style.BRIGHT}You need to have \"followers_1.json\" on the same folder as the executable. For more, read the README.")
-    exit()
+    error("You need to have \"followers_1.json\" on the same folder as the executable. For more, read the README.")
 except json.JSONDecodeError:
-    print(f"{Fore.RED}{Style.BRIGHT}The file \"followers_1.json\" is not formatted correctly.")
-    exit()
+    error("The file \"followers_1.json\" is not formatted correctly.")
 
 try:
     with open("./following.json") as file:
         followings = json.load(file)
 except FileNotFoundError:
-    print(f"{Fore.RED}{Style.BRIGHT}You need to have \"following.json\" on the same folder as the executable. For more, read the README.")
-    exit()
+    error("You need to have \"following.json\" on the same folder as the executable. For more, read the README.")
 except json.JSONDecodeError:
-    print(f"{Fore.RED}{Style.BRIGHT}The file \"following.json\" is not formatted correctly.")
-    exit()
+    error("The file \"following.json\" is not formatted correctly.")
 
 #Open or create the whitelist json
 try:
@@ -40,10 +38,9 @@ try:
 except FileNotFoundError:
     with open("./whitelist.json", "w") as file:
         file.write("[\n\t\"INSERT_HERE_THE_ACCOUNTS_YOU_DON'T_WANNA_CHECK_ON\"\n]")        
-    print(f"\n{Fore.YELLOW}The whitelist file has been created. Write in \"whitelist.json\" the accounts you don't wanna check on.{Fore.RESET}")
+    info("The whitelist file has been created. Write in \"whitelist.json\" the accounts you don't wanna check on.")
 except json.JSONDecodeError:
-    print(f"{Fore.RED}{Style.BRIGHT}The file \"whitelist.json\" is not formatted correctly.")
-    exit()
+    error("The file \"whitelist.json\" is not formatted correctly.")
 
 #Prepare lists to compare
 tagFollowers = list(follower["string_list_data"][0]['value'] for follower in followers)
