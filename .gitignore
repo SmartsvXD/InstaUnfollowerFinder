@@ -2,3 +2,4 @@ followers_1.json
 following.json
 whitelist.json
 __pycache__
+.DS_Store

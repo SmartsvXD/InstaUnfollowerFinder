@@ -37,7 +37,7 @@ Easly identify the people you follow but don't follow you back
 - Unzip the downloaded file
 - Open `~/connections/followers_and_following`
 - Move `followers.json` and `following_1.json` in the cloned repository folder
-- Run `main.py`, if everything is done correctly it should print the list of accounts
+- Run `main.py` and select **"Find unfollowers"**, if everything is done correctly it should print the list of accounts
 
 ## Privacy Note
 - This script runs entirely on your local machine. No personal data is shared or transmitted elsewhere. The code does not require your Instagram username or password.
