@@ -87,14 +87,17 @@ prevInputInvalid = 0
 while 1:
     clearCLI()
 
+    #Print all the actions
     for n, i in enumerate(actions.keys()):
         print(f"{n+1}. {Style.BRIGHT}{i}{Style.RESET_ALL}")
     print()
 
+    #Print something if the previrous input was not valid
     if prevInputInvalid:
         printColored("Invalid input!", Fore.RED)
         prevInputInvalid = 0
 
+    #Ask and run user input
     try:
         selection = int(input(f"{Fore.YELLOW}Select what you wanna do: {Fore.RESET}"))-1
         clearCLI()
