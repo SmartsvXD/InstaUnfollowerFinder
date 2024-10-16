@@ -90,9 +90,9 @@ def compareLists():
         ):
             nUnfollorers += 1
             print(
-                f"""{(len(str(len(followings)))-len(str(nUnfollorers))) * ' '}{nUnfollorers}. {Fore.RED}{Style.BRIGHT}
-                {following.upper()}{Style.RESET_ALL} {(len(max(followings))+2-len(following)) * ' '}
-                doesn't follow you back."""
+                f"{(len(str(len(followings)))-len(str(nUnfollorers))) * ' '}{nUnfollorers}. {Fore.RED}{Style.BRIGHT}"
+                f"{following.upper()}{Style.RESET_ALL} {(len(max(followings))+2-len(following)) * ' '}"
+                "doesn't follow you back."
             )
 
     if nUnfollorers == 0:
@@ -121,36 +121,40 @@ def about():
     )
 
 
-actions = {
-    "Find unfollowers": compareLists,
-    "Print whitelist": printWhitelist,
-    "About": about,
-    f"{Fore.RED}Exit{Fore.RESET}": exit,
-}
+def main():
+    actions = {
+        "Find unfollowers": compareLists,
+        "Print whitelist": printWhitelist,
+        "About": about,
+        f"{Fore.RED}Exit{Fore.RESET}": exit,
+    }
 
-prevInputInvalid = 0
-while 1:
-    clearCLI()
-
-    # Print all the actions
-    for n, i in enumerate(actions.keys()):
-        print(f" {n+1}. {Style.BRIGHT}{i}{Style.RESET_ALL}")
-    print()
-
-    # Print something if the previrous input was not valid
-    if prevInputInvalid:
-        printColored("Invalid input!", Fore.RED)
-        prevInputInvalid = 0
-
-    # Ask and run user input
-    try:
-        selection = (
-            int(input(f"{Fore.YELLOW}Select what you wanna do: {Fore.RESET}")) - 1
-        )
+    prevInputInvalid = 0
+    while 1:
         clearCLI()
-        tuple(actions.values())[selection]()
-        input(
-            f"{Fore.YELLOW}{Style.DIM}\n(Press ENTER to go back to menu){Style.RESET_ALL}"
-        )
-    except (IndexError, ValueError):
-        prevInputInvalid = 1
+
+        # Print all the actions
+        for n, i in enumerate(actions.keys()):
+            print(f" {n+1}. {Style.BRIGHT}{i}{Style.RESET_ALL}")
+        print()
+
+        # Print something if the previrous input was not valid
+        if prevInputInvalid:
+            printColored("Invalid input!", Fore.RED)
+            prevInputInvalid = 0
+
+        # Ask and run user input
+        try:
+            selection = (
+                int(input(f"{Fore.YELLOW}Select what you wanna do: {Fore.RESET}")) - 1
+            )
+            clearCLI()
+            tuple(actions.values())[selection]()
+            input(
+                f"{Fore.YELLOW}{Style.DIM}\n(Press ENTER to go back to menu){Style.RESET_ALL}"
+            )
+        except (IndexError, ValueError):
+            prevInputInvalid = 1
+
+
+main()
