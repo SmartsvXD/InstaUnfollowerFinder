@@ -3,11 +3,11 @@
 Easly identify the people you follow but don't follow you back\
 **NO PASSWORD OR USERNAME REQUIRED!!**
 
-## What is this?
+## ⁉️ What is this?
 
 Meta lets you download your personal data, like your posts, your connections, the followers list, ecc.. By following the quick guide you will download only the follower and following lists. This repository will then use that data to identify the people you follow but don't follow you back by comparing your followers and following lists.
 
-## Quick Guide
+## 📗 Quick Guide
 
 ### Step 0: Install Python (if necessary)
 
@@ -44,6 +44,6 @@ Meta lets you download your personal data, like your posts, your connections, th
 - Move `followers.json` and `following_1.json` in the cloned repository folder.
 - Run `main.py` and select **"Find unfollowers"**, if everything is done correctly it should print the list of accounts.
 
-## Privacy Note
+## 🔑 Privacy Note
 
 This script runs entirely on your local machine. No personal data is shared or transmitted elsewhere. The code does not require your Instagram username or password.
