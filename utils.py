@@ -1,9 +1,13 @@
 from colorama import Style, Fore
 import os
+from sys import platform
 
 
 def clearCLI():
-    os.system("clear")
+    if platform == "win32":
+        os.system("cls")
+    else:
+        os.system("clear")
 
 
 def error(txt):

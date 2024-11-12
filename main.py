@@ -132,6 +132,8 @@ def main():
     prevInputInvalid = 0
     while 1:
         clearCLI()
+        
+        print(f"{Fore.MAGENTA}{Style.BRIGHT}Welcome to InstaUnfollowerFinder by Smartsv!{Style.RESET_ALL}\n")
 
         # Print all the actions
         for n, i in enumerate(actions.keys()):
