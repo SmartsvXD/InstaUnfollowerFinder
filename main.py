@@ -6,7 +6,6 @@ try:
 except ImportError:
     print('\n\n"colorama" is nedded for the operation of this code!')
     print('Please install it by running: "pip install colorama"\n\n')
-    exit()
 
 from utils import error, info, printColored, clearCLI
 
@@ -51,6 +50,7 @@ def loadJSONs():
 
     # Open or create the whitelist json
     try:
+        # Try to open "whitelist.json"
         with open("./whitelist.json") as file:
             data = json.load(file)
             if data is list:
@@ -61,6 +61,7 @@ def loadJSONs():
             else:
                 whitelist = list(tag for tag in data)
     except FileNotFoundError:
+        # If "whitelist.json" is not found creates it
         with open("./whitelist.json", "w") as file:
             file.write('[\n\t"INSERT_HERE_THE_ACCOUNTS_YOU_DON\'T_WANNA_CHECK_ON"\n]')
         info(
@@ -69,6 +70,7 @@ def loadJSONs():
         with open("./whitelist.json") as file:
             whitelist = list(tag for tag in json.load(file))
     except json.JSONDecodeError as e:
+        # If "whitelist.json" is not formatted correctly return an error
         print(e)
         error('The file "whitelist.json" is not formatted correctly.')
         success = False
@@ -132,8 +134,10 @@ def main():
     prevInputInvalid = 0
     while 1:
         clearCLI()
-        
-        print(f"{Fore.MAGENTA}{Style.BRIGHT}Welcome to InstaUnfollowerFinder by Smartsv!{Style.RESET_ALL}\n")
+
+        print(
+            f"{Fore.MAGENTA}{Style.BRIGHT}Welcome to InstaUnfollowerFinder by Smartsv!{Style.RESET_ALL}\n"
+        )
 
         # Print all the actions
         for n, i in enumerate(actions.keys()):
