@@ -6,6 +6,8 @@ try:
 except ImportError:
     print('\n\n"colorama" is nedded for the operation of this code!')
     print('Please install it by running: "pip install colorama"\n\n')
+    input("(Press ENTER to exit)")
+    exit()
 
 from utils import error, info, printColored, clearCLI
 
