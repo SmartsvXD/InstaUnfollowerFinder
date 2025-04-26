@@ -1,7 +1,7 @@
 import customtkinter as tk
 from tkinter import filedialog, messagebox
-import webbrowser
-import os
+import webbrowser, os, math
+import utils as u
 
 
 class App:
@@ -9,7 +9,22 @@ class App:
     PLUSWIDTH = 510 + 487
     HEIGHT = 457
 
+    STEPS_SLIDE_SIDE = 20
+    DELAY_SLIDE_SIDE = 3
+    
+    EXTRA_STEPS_SLIDE_SIDE = 50
+
+    N_BUTTONS_SIDE_GRID = 15
+
     def __init__(self):
+        self.followersPath = ""
+        self.followingPath = ""
+
+        self.maxPages = 0
+        self.page = 0
+
+        self.sideName = None
+
         self.root = tk.CTk()
         self.root.configure(bg="#2C2C2C")
         self.root.title("InstaUnfollowerFinder")
@@ -95,20 +110,14 @@ class App:
         self.titleB.place(x=30, y=127, anchor="w")
         self.titleC.place(x=30, y=194, anchor="w")
 
-        closeSideB = tk.CTkButton(
+        self.myName = tk.CTkLabel(
             self.root,
-            text="<<",
-            font=("Courier New", 18, "bold"),
-            anchor="center",
-            text_color="#f0f0f0",
-            fg_color="#2c2c2c",
-            hover_color="#333333",
-            corner_radius=0,
-            command=self.closeSide,
-            width=20,
-            height=20,
+            text="by SmartsvXD 2025",
+            font=("Courier New", 12, "bold"),
+            bg_color="#2C2C2C",
+            text_color="#a0a0a0",
         )
-        closeSideB.place(x=21 + 487, y=22, anchor="nw")
+        self.myName.place(x=265, y=150, anchor="nw")
 
         self.findUnfollowersB = tk.CTkButton(
             self.root,
@@ -119,7 +128,7 @@ class App:
             fg_color="#2c2c2c",
             hover_color="#2c2c2c",
             corner_radius=0,
-            command=self.openSide,
+            command=self.showUnfollowersOpen,
             width=240,
             height=30,
         )
@@ -138,7 +147,7 @@ class App:
             width=240,
             height=30,
         )
-        self.loadJSONSB = tk.CTkButton(
+        self.loadJSONsB = tk.CTkButton(
             self.root,
             text="Load JSONS",
             font=("Courier New", 18, "bold"),
@@ -147,7 +156,7 @@ class App:
             fg_color="#2c2c2c",
             hover_color="#2c2c2c",
             corner_radius=0,
-            command=self.openJSONS,
+            command=self.openJSONs,
             width=240,
             height=30,
         )
@@ -160,14 +169,14 @@ class App:
             fg_color="#2c2c2c",
             hover_color="#2c2c2c",
             corner_radius=0,
-            command=lambda: print("Ciaoo"),
+            command=self.editWhitelistOpen,
             width=240,
             height=30,
         )
 
-        self.findUnfollowersB.place(x=50, y=270, anchor="w")
+        self.findUnfollowersB.place(x=52, y=272, anchor="w")
         self.opeMetaAccountCenterB.place(x=50, y=300, anchor="w")
-        self.loadJSONSB.place(x=50, y=330, anchor="w")
+        self.loadJSONsB.place(x=50, y=330, anchor="w")
         self.editWhitelistB.place(x=50, y=360, anchor="w")
 
         self.hoverLabel = tk.CTkLabel(
@@ -182,74 +191,116 @@ class App:
         self.findUnfollowersB.bind(
             "<Enter>", lambda event: self.onEnterHoverLabel(event)
         )
-        self.findUnfollowersB.bind("<Leave>", self.onLeaveHovelLabel)
+        self.findUnfollowersB.bind("<Leave>", self.onLeaveHoverLabel)
 
         self.opeMetaAccountCenterB.bind(
             "<Enter>", lambda event: self.onEnterHoverLabel(event)
         )
-        self.opeMetaAccountCenterB.bind("<Leave>", self.onLeaveHovelLabel)
+        self.opeMetaAccountCenterB.bind("<Leave>", self.onLeaveHoverLabel)
 
-        self.loadJSONSB.bind("<Enter>", lambda event: self.onEnterHoverLabel(event))
-        self.loadJSONSB.bind("<Leave>", self.onLeaveHovelLabel)
+        self.loadJSONsB.bind("<Enter>", lambda event: self.onEnterHoverLabel(event))
+        self.loadJSONsB.bind("<Leave>", self.onLeaveHoverLabel)
 
         self.editWhitelistB.bind("<Enter>", lambda event: self.onEnterHoverLabel(event))
-        self.editWhitelistB.bind("<Leave>", self.onLeaveHovelLabel)
+        self.editWhitelistB.bind("<Leave>", self.onLeaveHoverLabel)
 
-    def openSide(self, steps=20, delay=3, i=0):
-        currentWidth = self.root.winfo_width()
-
-        if i < steps and currentWidth < self.PLUSWIDTH:
-            newWidth = int(currentWidth + (self.PLUSWIDTH - self.WIDTH) / steps)
-            self.root.geometry(f"{newWidth}x{self.HEIGHT}")
-            self.root.after(delay, self.openSide, steps, delay, i + 1)
-        else:
-            self.root.geometry(f"{self.PLUSWIDTH}x{self.HEIGHT}")
-
-    def closeSide(self, steps=20, delay=3, i=0):
-        currentWidth = self.root.winfo_width()
-
-        if i < steps and currentWidth > self.WIDTH:
-            newWidth = int(currentWidth + (self.WIDTH - self.PLUSWIDTH) / steps)
-            self.root.geometry(f"{newWidth}x{self.HEIGHT}")
-            self.root.after(delay, self.closeSide, steps, delay, i + 1)
-        else:
-            self.root.geometry(f"{self.WIDTH}x{self.HEIGHT}")
-
-    def openJSONS(self):
-        files = filedialog.askopenfilenames(
-            title="Select followers_1.json and following.json",
-            filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")],
+        self.closeSideB = tk.CTkButton(
+            self.root,
+            text="<<",
+            font=("Courier New", 18, "bold"),
+            anchor="center",
+            text_color="#f0f0f0",
+            fg_color="#2c2c2c",
+            hover_color="#333333",
+            corner_radius=0,
+            command=self.closeSide,
+            width=20,
+            height=20,
         )
-        
-        if not len(files):
-            return
+        self.closeSideB.place(x=510 - 2, y=22, anchor="nw")
 
-        if len(files) != 2:
-            messagebox.showerror(
-                title="Error",
-                message="Wrong files selected.\nYou need to select followers_1.json and following.json.",
+        self.nPage = tk.CTkLabel(
+            self.root,
+            text="00/00",
+            font=("Courier New", 18, "bold"),
+            anchor="center",
+            text_color="#f0f0f0",
+            fg_color="#2c2c2c",
+            corner_radius=0,
+            width=20,
+            height=20,
+        )
+        self.nPage.place(x=510 + 487 / 2 - 20, y=25, anchor="n")
+        self.root.update_idletasks()
+
+        self.prevPageB = tk.CTkButton(
+            self.root,
+            text="<",
+            font=("Courier New", 18, "bold"),
+            anchor="center",
+            text_color="#f0f0f0",
+            fg_color="#2c2c2c",
+            hover_color="#333333",
+            corner_radius=0,
+            command=self.prevPage,
+            width=20,
+            height=20,
+        )
+        self.prevPageB.place(x=self.nPage.winfo_x() - 40, y=22, anchor="ne")
+
+        self.nextPageB = tk.CTkButton(
+            self.root,
+            text=">",
+            font=("Courier New", 18, "bold"),
+            anchor="center",
+            text_color="#f0f0f0",
+            fg_color="#2c2c2c",
+            hover_color="#333333",
+            corner_radius=0,
+            command=self.nextPage,
+            width=20,
+            height=20,
+        )
+        self.nextPageB.place(
+            x=self.nPage.winfo_x() + self.nPage.winfo_width() + 40, y=22, anchor="nw"
+        )
+
+        self.sideGridNames = tuple(
+            tk.CTkButton(
+                self.root,
+                width=375,
+                height=25,
+                font=("Courier New", 18, "bold"),
+                anchor="nw",
+                text_color="#f0f0f0",
+                fg_color="#2c2c2c",
+                hover_color="#333333",
+                corner_radius=0,
+                text="AAAAAAAA",
             )
-            return
-
-        followersPath, followingPath = None, None
-        for file in files:
-            if os.path.basename(file) == "followers_1.json":
-                followersPath = file
-            elif os.path.basename(file) == "following.json":
-                followingPath = file
-            else:
-                messagebox.showerror(
-                    title="Error",
-                    message="Invalid files.\n You need to select followers_1.json and following.json.",
+            for _ in range(self.N_BUTTONS_SIDE_GRID)
+        )
+        self.sideGridBtns = tuple(
+            (
+                tk.CTkButton(
+                    self.root,
+                    width=25,
+                    height=25,
+                    font=("Courier New", 18, "bold"),
+                    anchor="n",
+                    text_color="#f0f0f0",
+                    fg_color="#2c2c2c",
+                    hover_color="#333333",
+                    corner_radius=0,
+                    text="B",
                 )
-                return
-
-        if not (followersPath and followingPath):
-            messagebox.showerror(
-                title="Error",
-                message="Invalid files.\n You need to select followers_1.json and following.json.",
             )
-            return
+            for _ in range(self.N_BUTTONS_SIDE_GRID)
+        )
+
+        for i in range(self.N_BUTTONS_SIDE_GRID):
+            self.sideGridNames[i].place(x=80 + 487, y=45 + 25 * i, anchor="nw")
+            self.sideGridBtns[i].place(x=55 + 487, y=45 + 25 * i, anchor="nw")
 
     def onEnterHoverLabel(self, event):
         widget = event.widget
@@ -257,7 +308,7 @@ class App:
         y = widget.winfo_rooty() - self.root.winfo_rooty() + 11
         self.hoverLabel.place(x=x, y=y, anchor="e")
 
-    def onLeaveHovelLabel(self, event):
+    def onLeaveHoverLabel(self, event):
         self.hoverLabel.place_forget()
 
     def updateFrame(self, flip):
@@ -320,10 +371,204 @@ class App:
 
         self.root.after(500, self.updateFrame, flop)
 
+    def openSide(self, i=0):
+        currentWidth = self.root.winfo_width()
+
+        if i < self.STEPS_SLIDE_SIDE and currentWidth < self.PLUSWIDTH:
+            newWidth = int(currentWidth + (self.PLUSWIDTH - self.WIDTH) / self.STEPS_SLIDE_SIDE)
+            self.root.geometry(f"{newWidth}x{self.HEIGHT}")
+            self.root.after(self.DELAY_SLIDE_SIDE, self.openSide, i + 1)
+        else:
+            self.root.geometry(f"{self.PLUSWIDTH}x{self.HEIGHT}")
+
+    def closeSide(self, i=0):
+        currentWidth = self.root.winfo_width()
+
+        if i < self.STEPS_SLIDE_SIDE and currentWidth > self.WIDTH:
+            newWidth = int(currentWidth + (self.WIDTH - self.PLUSWIDTH) / self.STEPS_SLIDE_SIDE)
+            self.root.geometry(f"{newWidth}x{self.HEIGHT}")
+            self.root.after(self.DELAY_SLIDE_SIDE, self.closeSide, i + 1)
+        else:
+            self.root.geometry(f"{self.WIDTH}x{self.HEIGHT}")
+
+        self.page = 0
+
+    def error(self, text):
+        messagebox.showerror(
+            title="Error",
+            message=text,
+        )
+
+    def info(self, text):
+        messagebox.showinfo(title="Info", message=text)
+
+    def openJSONs(self):
+        files = filedialog.askopenfilenames(
+            title="Select followers_1.json and following.json",
+            filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")],
+        )
+
+        if not len(files):
+            return
+
+        if len(files) != 2:
+            self.error(
+                "Wrong files selected.\nYou need to select followers_1.json and following.json."
+            )
+            return
+
+        for file in files:
+            if os.path.basename(file) == "followers_1.json":
+                self.followersPath = file
+            elif os.path.basename(file) == "following.json":
+                self.followingPath = file
+            else:
+                self.error(
+                    "Invalid files.\n You need to select followers_1.json and following.json."
+                )
+                return
+
+        if self.followersPath == "" or self.followingPath == "":
+            self.error(
+                "Invalid files.\n You need to select followers_1.json and following.json."
+            )
+            return
+
+    def updateSide(self):
+        return
+
+    def updatePrevNextNPages(self):
+        self.nPage.configure(text=f"{self.page+1}/{self.maxPages}")
+        self.root.update_idletasks()
+
+        self.prevPageB.place(x=self.nPage.winfo_x(), y=22, anchor="ne")
+        self.nextPageB.place(
+            x=self.nPage.winfo_x() + self.nPage.winfo_width(), y=22, anchor="nw"
+        )
+
+        self.updateSide()
+
+    def prevPage(self):
+        if self.page == 0:
+            return
+
+        self.page -= 1
+        self.updatePrevNextNPages()
+
+    def nextPage(self):
+        if self.page == self.maxPages - 1:
+            return
+
+        self.page += 1
+        self.updatePrevNextNPages()
+
+    def addToWhitelist(self, unfollower):
+        u.addToWhiteList(unfollower, infoF=self.info, errorF=self.error)
+        self.showUnfollowers()
+
+    def showUnfollowersOpen(self):
+        if self.sideName != "showUnfollowers" and self.sideName != None:
+            self.sideName = "showUnfollowers"
+            self.closeSide()
+            self.root.after(self.DELAY_SLIDE_SIDE * (self.STEPS_SLIDE_SIDE+self.EXTRA_STEPS_SLIDE_SIDE), self.showUnfollowers)
+        else:
+            self.sideName = "showUnfollowers"
+            self.showUnfollowers()
+
+    def showUnfollowers(self):
+        if self.followersPath == "" or self.followingPath == "":
+            self.openJSONs()
+
+        unfollowers = u.compareLists(
+            followersPath=self.followersPath,
+            followingPath=self.followingPath,
+            infoF=self.info,
+            errorF=self.error,
+        )
+
+        if unfollowers == []:
+            # TODO Show that you have no unfollowers
+            return
+
+        self.maxPages = math.ceil(len(unfollowers) / self.N_BUTTONS_SIDE_GRID)
+        self.updatePrevNextNPages()
+
+        def update():
+            for i in range(self.N_BUTTONS_SIDE_GRID):
+                if i + self.page * self.N_BUTTONS_SIDE_GRID < len(unfollowers):
+                    unfollower = unfollowers[i + self.page * self.N_BUTTONS_SIDE_GRID]
+                    self.sideGridNames[i].configure(
+                        text=unfollower,
+                        command=lambda usr=unfollower: webbrowser.open(
+                            f"https://www.instagram.com/{usr}"
+                        ),
+                    )
+                    self.sideGridBtns[i].configure(
+                        text="+",
+                        text_color="#70a0f0",
+                        command=lambda usr=unfollower: self.addToWhitelist(usr),
+                    )
+                else:
+                    self.sideGridNames[i].configure(text="", command=None)
+                    self.sideGridBtns[i].configure(text="", command=None)
+
+        self.updateSide = update
+        self.updateSide()
+
+        self.openSide()
+
+    def removeFromWhitelist(self, user):
+        u.removeFromWhiteList(user, infoF=self.info, errorF=self.error)
+        self.editWhitelist()
+
+    def editWhitelistOpen(self):
+        if self.sideName != "editWhitelist" and self.sideName != None:
+            self.sideName = "editWhitelist"
+            self.closeSide()
+            self.root.after(self.DELAY_SLIDE_SIDE * (self.STEPS_SLIDE_SIDE+self.EXTRA_STEPS_SLIDE_SIDE), self.editWhitelist)
+        else:
+            self.sideName = "editWhitelist"
+            self.editWhitelist()
+            
+    def editWhitelist(self):
+        whitelist = u.loadWhitelist(infoF=self.info, errorF=self.error)
+
+        if whitelist == []:
+            # TODO Show that the whitelist is empty
+            return
+
+        self.maxPages = math.ceil(len(whitelist) / self.N_BUTTONS_SIDE_GRID)
+        self.updatePrevNextNPages()
+
+        def update():
+            for i in range(self.N_BUTTONS_SIDE_GRID):
+                if i + self.page * self.N_BUTTONS_SIDE_GRID < len(whitelist):
+                    user = whitelist[i + self.page * self.N_BUTTONS_SIDE_GRID]
+                    self.sideGridNames[i].configure(
+                        text=user,
+                        command=lambda usr=user: webbrowser.open(
+                            f"https://www.instagram.com/{usr}"
+                        ),
+                    )
+                    self.sideGridBtns[i].configure(
+                        text="-",
+                        text_color="#ff7050",
+                        command=lambda usr=user: self.removeFromWhitelist(usr),
+                    )
+                else:
+                    self.sideGridNames[i].configure(text="", command=None)
+                    self.sideGridBtns[i].configure(text="", command=None)
+
+        self.updateSide = update
+        self.updateSide()
+
+        self.openSide()
+
     def run(self):
         self.updateFrame(0)
         self.root.mainloop()
 
 
-app = App()
-app.run()
+def main():
+    app = App()
+    app.run()
