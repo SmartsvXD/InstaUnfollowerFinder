@@ -103,7 +103,7 @@ def loadWhitelist(infoF=info, errorF=error):
 
 def saveWhitelist(whitelist):
     with open("./whitelist.json", "w") as f:
-        json.dump(whitelist, f)
+        json.dump(tuple(set(whitelist)), f)
 
 
 def addToWhiteList(name, infoF=info, errorF=error):

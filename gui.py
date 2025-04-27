@@ -11,7 +11,7 @@ class App:
 
     STEPS_SLIDE_SIDE = 20
     DELAY_SLIDE_SIDE = 3
-    
+
     EXTRA_STEPS_SLIDE_SIDE = 50
 
     N_BUTTONS_SIDE_GRID = 15
@@ -375,7 +375,9 @@ class App:
         currentWidth = self.root.winfo_width()
 
         if i < self.STEPS_SLIDE_SIDE and currentWidth < self.PLUSWIDTH:
-            newWidth = int(currentWidth + (self.PLUSWIDTH - self.WIDTH) / self.STEPS_SLIDE_SIDE)
+            newWidth = int(
+                currentWidth + (self.PLUSWIDTH - self.WIDTH) / self.STEPS_SLIDE_SIDE
+            )
             self.root.geometry(f"{newWidth}x{self.HEIGHT}")
             self.root.after(self.DELAY_SLIDE_SIDE, self.openSide, i + 1)
         else:
@@ -385,7 +387,9 @@ class App:
         currentWidth = self.root.winfo_width()
 
         if i < self.STEPS_SLIDE_SIDE and currentWidth > self.WIDTH:
-            newWidth = int(currentWidth + (self.WIDTH - self.PLUSWIDTH) / self.STEPS_SLIDE_SIDE)
+            newWidth = int(
+                currentWidth + (self.WIDTH - self.PLUSWIDTH) / self.STEPS_SLIDE_SIDE
+            )
             self.root.geometry(f"{newWidth}x{self.HEIGHT}")
             self.root.after(self.DELAY_SLIDE_SIDE, self.closeSide, i + 1)
         else:
@@ -403,19 +407,21 @@ class App:
         messagebox.showinfo(title="Info", message=text)
 
     def openJSONs(self):
+        self.followingPath, self.followersPath = "", ""
+
         files = filedialog.askopenfilenames(
             title="Select followers_1.json and following.json",
             filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")],
         )
 
         if not len(files):
-            return
+            return False
 
         if len(files) != 2:
             self.error(
                 "Wrong files selected.\nYou need to select followers_1.json and following.json."
             )
-            return
+            return False
 
         for file in files:
             if os.path.basename(file) == "followers_1.json":
@@ -426,13 +432,15 @@ class App:
                 self.error(
                     "Invalid files.\n You need to select followers_1.json and following.json."
                 )
-                return
+                return False
 
         if self.followersPath == "" or self.followingPath == "":
             self.error(
                 "Invalid files.\n You need to select followers_1.json and following.json."
             )
-            return
+            return False
+
+        return True
 
     def updateSide(self):
         return
@@ -470,14 +478,19 @@ class App:
         if self.sideName != "showUnfollowers" and self.sideName != None:
             self.sideName = "showUnfollowers"
             self.closeSide()
-            self.root.after(self.DELAY_SLIDE_SIDE * (self.STEPS_SLIDE_SIDE+self.EXTRA_STEPS_SLIDE_SIDE), self.showUnfollowers)
+            self.root.after(
+                self.DELAY_SLIDE_SIDE
+                * (self.STEPS_SLIDE_SIDE + self.EXTRA_STEPS_SLIDE_SIDE),
+                self.showUnfollowers,
+            )
         else:
             self.sideName = "showUnfollowers"
             self.showUnfollowers()
 
     def showUnfollowers(self):
         if self.followersPath == "" or self.followingPath == "":
-            self.openJSONs()
+            if not self.openJSONs():
+                return
 
         unfollowers = u.compareLists(
             followersPath=self.followersPath,
@@ -487,37 +500,56 @@ class App:
         )
 
         if unfollowers == []:
-            # TODO Show that you have no unfollowers
-            return
+            self.sideGridNames[0].configure(
+                text="Everyone follows you back!", command=None
+            )
+            self.sideGridBtns[0].configure(text="", command=None)
+            for i in range(1, self.N_BUTTONS_SIDE_GRID):
+                self.sideGridNames[i].configure(text="", command=None)
+                self.sideGridBtns[i].configure(text="", command=None)
 
-        self.maxPages = math.ceil(len(unfollowers) / self.N_BUTTONS_SIDE_GRID)
-        self.updatePrevNextNPages()
+            def update():
+                return
 
-        def update():
-            for i in range(self.N_BUTTONS_SIDE_GRID):
-                if i + self.page * self.N_BUTTONS_SIDE_GRID < len(unfollowers):
-                    unfollower = unfollowers[i + self.page * self.N_BUTTONS_SIDE_GRID]
-                    self.sideGridNames[i].configure(
-                        text=unfollower,
-                        command=lambda usr=unfollower: webbrowser.open(
-                            f"https://www.instagram.com/{usr}"
-                        ),
-                    )
-                    self.sideGridBtns[i].configure(
-                        text="+",
-                        text_color="#70a0f0",
-                        command=lambda usr=unfollower: self.addToWhitelist(usr),
-                    )
-                else:
-                    self.sideGridNames[i].configure(text="", command=None)
-                    self.sideGridBtns[i].configure(text="", command=None)
+            self.updateSide = update
 
-        self.updateSide = update
-        self.updateSide()
+            self.page = 0
+            self.maxPages = 1
+            self.updatePrevNextNPages()
 
-        self.openSide()
+            self.openSide()
+        else:
+            self.maxPages = math.ceil(len(unfollowers) / self.N_BUTTONS_SIDE_GRID)
+            self.updatePrevNextNPages()
+
+            def update():
+                for i in range(self.N_BUTTONS_SIDE_GRID):
+                    if i + self.page * self.N_BUTTONS_SIDE_GRID < len(unfollowers):
+                        unfollower = unfollowers[
+                            i + self.page * self.N_BUTTONS_SIDE_GRID
+                        ]
+                        self.sideGridNames[i].configure(
+                            text=unfollower,
+                            command=lambda usr=unfollower: webbrowser.open(
+                                f"https://www.instagram.com/{usr}"
+                            ),
+                        )
+                        self.sideGridBtns[i].configure(
+                            text="+",
+                            text_color="#70a0f0",
+                            command=lambda usr=unfollower: self.addToWhitelist(usr),
+                        )
+                    else:
+                        self.sideGridNames[i].configure(text="", command=None)
+                        self.sideGridBtns[i].configure(text="", command=None)
+
+            self.updateSide = update
+            self.updateSide()
+
+            self.openSide()
 
     def removeFromWhitelist(self, user):
+
         u.removeFromWhiteList(user, infoF=self.info, errorF=self.error)
         self.editWhitelist()
 
@@ -525,44 +557,62 @@ class App:
         if self.sideName != "editWhitelist" and self.sideName != None:
             self.sideName = "editWhitelist"
             self.closeSide()
-            self.root.after(self.DELAY_SLIDE_SIDE * (self.STEPS_SLIDE_SIDE+self.EXTRA_STEPS_SLIDE_SIDE), self.editWhitelist)
+            self.root.after(
+                self.DELAY_SLIDE_SIDE
+                * (self.STEPS_SLIDE_SIDE + self.EXTRA_STEPS_SLIDE_SIDE),
+                self.editWhitelist,
+            )
         else:
             self.sideName = "editWhitelist"
             self.editWhitelist()
-            
+
     def editWhitelist(self):
         whitelist = u.loadWhitelist(infoF=self.info, errorF=self.error)
 
         if whitelist == []:
-            # TODO Show that the whitelist is empty
-            return
+            self.sideGridNames[0].configure(text="The whitelist is empty", command=None)
+            self.sideGridBtns[0].configure(text="", command=None)
+            for i in range(1, self.N_BUTTONS_SIDE_GRID):
+                self.sideGridNames[i].configure(text="", command=None)
+                self.sideGridBtns[i].configure(text="", command=None)
 
-        self.maxPages = math.ceil(len(whitelist) / self.N_BUTTONS_SIDE_GRID)
-        self.updatePrevNextNPages()
+            def update():
+                return
 
-        def update():
-            for i in range(self.N_BUTTONS_SIDE_GRID):
-                if i + self.page * self.N_BUTTONS_SIDE_GRID < len(whitelist):
-                    user = whitelist[i + self.page * self.N_BUTTONS_SIDE_GRID]
-                    self.sideGridNames[i].configure(
-                        text=user,
-                        command=lambda usr=user: webbrowser.open(
-                            f"https://www.instagram.com/{usr}"
-                        ),
-                    )
-                    self.sideGridBtns[i].configure(
-                        text="-",
-                        text_color="#ff7050",
-                        command=lambda usr=user: self.removeFromWhitelist(usr),
-                    )
-                else:
-                    self.sideGridNames[i].configure(text="", command=None)
-                    self.sideGridBtns[i].configure(text="", command=None)
+            self.updateSide = update
 
-        self.updateSide = update
-        self.updateSide()
+            self.page = 0
+            self.maxPages = 1
+            self.updatePrevNextNPages()
 
-        self.openSide()
+            self.openSide()
+        else:
+            self.maxPages = math.ceil(len(whitelist) / self.N_BUTTONS_SIDE_GRID)
+            self.updatePrevNextNPages()
+
+            def update():
+                for i in range(self.N_BUTTONS_SIDE_GRID):
+                    if i + self.page * self.N_BUTTONS_SIDE_GRID < len(whitelist):
+                        user = whitelist[i + self.page * self.N_BUTTONS_SIDE_GRID]
+                        self.sideGridNames[i].configure(
+                            text=user,
+                            command=lambda usr=user: webbrowser.open(
+                                f"https://www.instagram.com/{usr}"
+                            ),
+                        )
+                        self.sideGridBtns[i].configure(
+                            text="-",
+                            text_color="#ff7050",
+                            command=lambda usr=user: self.removeFromWhitelist(usr),
+                        )
+                    else:
+                        self.sideGridNames[i].configure(text="", command=None)
+                        self.sideGridBtns[i].configure(text="", command=None)
+
+            self.updateSide = update
+            self.updateSide()
+
+            self.openSide()
 
     def run(self):
         self.updateFrame(0)
