@@ -1,6 +1,10 @@
-import json
+import json, sys, os
 from cliUtils import error, info
 
+if getattr(sys, 'frozen', False):
+    basePath = sys._MEIPASS  
+else:
+    basePath = os.path.dirname(__file__)
 
 def loadJSONs(
     followersPath="./followers_1.josn",
@@ -73,7 +77,7 @@ def loadWhitelist(infoF=info, errorF=error):
     # Open or create the whitelist json
     try:
         # Try to open "whitelist.json"
-        with open("./whitelist.json") as file:
+        with open(os.path.join(basePath, "whitelist.json")) as file:
             data = json.load(file)
             if data is list:
                 errorF('The file "whitelist.json" is not formatted correctly.')
@@ -82,12 +86,12 @@ def loadWhitelist(infoF=info, errorF=error):
                 whitelist = list(tag for tag in data)
     except FileNotFoundError:
         # If "whitelist.json" is not found creates it
-        with open("./whitelist.json", "w") as file:
+        with open(os.path.join(basePath, "whitelist.json"), "w") as file:
             file.write('[\n\t"INSERT_HERE_THE_ACCOUNTS_YOU_DON\'T_WANNA_CHECK_ON"\n]')
         infoF(
             "whitelist.json has been created. Add in the whitelist the accounts you don't wanna check on.\n"
         )
-        with open("./whitelist.json") as file:
+        with open(os.path.join(basePath, "whitelist.json")) as file:
             whitelist = list(tag for tag in json.load(file))
     except json.JSONDecodeError as e:
         # If "whitelist.json" is not formatted correctly return an error
@@ -102,7 +106,7 @@ def loadWhitelist(infoF=info, errorF=error):
 
 
 def saveWhitelist(whitelist):
-    with open("./whitelist.json", "w") as f:
+    with open(os.path.join(basePath, "whitelist.json"), "w") as f:
         json.dump(tuple(set(whitelist)), f)
 
 
