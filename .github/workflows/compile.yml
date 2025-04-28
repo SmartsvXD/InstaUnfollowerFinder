@@ -1,0 +1,80 @@
+name: Compile
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    name: Build for macOS
+    runs-on: macos-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Python environment
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+      # Compile the application for macOS
+      - name: Compile for macOS
+        run: pyinstaller build_macos.spec
+
+      # Create a DMG file containing the .app
+      - name: Create DMG for macOS
+        run: |
+          # Clean up any previous DMG/temporary files
+          rm -rf dist/DMG
+          # Create the DMG
+          mkdir -p dist/DMG
+          cp -R dist/InstaUnfollowerFinder.app dist/DMG
+          ln -s /Applications dist/DMG/Applications
+          # Create the .dmg file (clean up any mounted DMGs first)
+          hdiutil detach /Volumes/InstaUnfollowerFinder || true
+          hdiutil create -volname "InstaUnfollowerFinder" -srcfolder dist/DMG -ov -format UDZO dist/InstaUnfollowerFinder.dmg
+      # Upload the macOS DMG artifact
+      - name: Upload macOS DMG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: dist/InstaUnfollowerFinder.dmg
+
+  build-windows:
+    name: Build for Windows
+    runs-on: windows-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Python environment
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+          
+      # Compile the application for Windows
+      - name: Compile for Windows
+        run: pyinstaller --onefile --windowed --name "InstaUnfollowerFinder" main.py
+
+      # Upload the compiled artifact
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-compiled
+          path: dist/InstaUnfollowerFinder.exe
