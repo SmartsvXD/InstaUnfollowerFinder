@@ -4,3 +4,5 @@ whitelist.json
 __pycache__
 .DS_Store
 .venv
+build
+dist
