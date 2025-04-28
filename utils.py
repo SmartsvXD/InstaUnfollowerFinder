@@ -92,9 +92,12 @@ def loadWhitelist(infoF=info, errorF=error):
             whitelist = list(tag for tag in json.load(file))
     except json.JSONDecodeError as e:
         # If "whitelist.json" is not formatted correctly return an error
-        errorF(e)
+        print(e)
         errorF('The file "whitelist.json" is not formatted correctly.')
         return []
+
+    if "INSERT_HERE_THE_ACCOUNTS_YOU_DON'T_WANNA_CHECK_ON" in whitelist:
+        whitelist.remove("INSERT_HERE_THE_ACCOUNTS_YOU_DON'T_WANNA_CHECK_ON")
 
     return whitelist
 

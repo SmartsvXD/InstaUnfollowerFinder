@@ -32,12 +32,13 @@ jobs:
       - name: Create DMG for macOS
         run: |
           # Clean up any previous DMG/temporary files
-          rm -rf dist
+          rm -rf dist/DMG
           # Create the DMG
           mkdir -p dist/DMG
           cp -R dist/InstaUnfollowerFinder.app dist/DMG
+          ln -s /Applications dist/DMG/Applications
           # Create the .dmg file (clean up any mounted DMGs first)
-          hdiutil info | grep "InstaUnfollowerFinder" || hdiutil detach /Volumes/InstaUnfollowerFinder || true
+          hdiutil detach /Volumes/InstaUnfollowerFinder || true
           hdiutil create -volname "InstaUnfollowerFinder" -srcfolder dist/DMG -ov -format UDZO dist/InstaUnfollowerFinder.dmg
       # Upload the macOS DMG artifact
       - name: Upload macOS DMG artifact
@@ -69,7 +70,7 @@ jobs:
           
       # Compile the application for Windows
       - name: Compile for Windows
-        run: pyinstaller --onefile --name "InstaUnfollowerFinder" main.py
+        run: pyinstaller --onefile --windowed --name "InstaUnfollowerFinder" main.py
 
       # Upload the compiled artifact
       - name: Upload Windows artifact
