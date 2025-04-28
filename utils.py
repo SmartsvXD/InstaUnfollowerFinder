@@ -7,8 +7,8 @@ else:
     basePath = os.path.dirname(__file__)
 
 def loadJSONs(
-    followersPath="./followers_1.josn",
-    followingPath="./following.json",
+    followersPath=os.path.join(basePath, "followers_1.json"),
+    followingPath=os.path.join(basePath, "following.json"),
     errorF=error,
 ):
     success = True
@@ -45,8 +45,8 @@ def loadJSONs(
 
 
 def compareLists(
-    followersPath="./followers_1.josn",
-    followingPath="./following.json",
+    followersPath=os.path.join(basePath, "./followers_1.json"),
+    followingPath=os.path.join(basePath, "following.json"),
     infoF=info,
     errorF=error,
 ):
@@ -87,10 +87,7 @@ def loadWhitelist(infoF=info, errorF=error):
     except FileNotFoundError:
         # If "whitelist.json" is not found creates it
         with open(os.path.join(basePath, "whitelist.json"), "w") as file:
-            file.write('[\n\t"INSERT_HERE_THE_ACCOUNTS_YOU_DON\'T_WANNA_CHECK_ON"\n]')
-        infoF(
-            "whitelist.json has been created. Add in the whitelist the accounts you don't wanna check on.\n"
-        )
+            file.write('[]')
         with open(os.path.join(basePath, "whitelist.json")) as file:
             whitelist = list(tag for tag in json.load(file))
     except json.JSONDecodeError as e:
