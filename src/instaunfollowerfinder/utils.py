@@ -1,10 +1,13 @@
-import json, sys, os
-from cliUtils import error, info
+import json
+import sys
+import os
+from src.instaunfollowerfinder.cli_utils import error, info
 
-if getattr(sys, 'frozen', False):
-    basePath = sys._MEIPASS  
+if getattr(sys, "frozen", False):
+    basePath = sys._MEIPASS
 else:
     basePath = os.path.dirname(__file__)
+
 
 def loadJSONs(
     followersPath=os.path.join(basePath, "followers_1.json"),
@@ -87,7 +90,7 @@ def loadWhitelist(infoF=info, errorF=error):
     except FileNotFoundError:
         # If "whitelist.json" is not found creates it
         with open(os.path.join(basePath, "whitelist.json"), "w") as file:
-            file.write('[]')
+            file.write("[]")
         with open(os.path.join(basePath, "whitelist.json")) as file:
             whitelist = list(tag for tag in json.load(file))
     except json.JSONDecodeError as e:
@@ -111,12 +114,13 @@ def addToWhiteList(name, infoF=info, errorF=error):
     whitelist = loadWhitelist(infoF=infoF, errorF=errorF)
 
     whitelist.append(name)
-    
+
     saveWhitelist(whitelist)
-    
+
+
 def removeFromWhiteList(name, infoF=info, errorF=error):
     whitelist = loadWhitelist(infoF=infoF, errorF=errorF)
 
     whitelist.remove(name)
-    
+
     saveWhitelist(whitelist)

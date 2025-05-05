@@ -1,7 +1,9 @@
 import customtkinter as tk
 from tkinter import filedialog, messagebox
-import webbrowser, os, math
-import utils as u
+import webbrowser
+import os
+import math
+import src.instaunfollowerfinder.utils as u
 
 
 class App:
@@ -446,7 +448,7 @@ class App:
         return
 
     def updatePrevNextNPages(self):
-        self.nPage.configure(text=f"{self.page+1}/{self.maxPages}")
+        self.nPage.configure(text=f"{self.page + 1}/{self.maxPages}")
         self.root.update_idletasks()
 
         self.prevPageB.place(x=self.nPage.winfo_x(), y=22, anchor="ne")
@@ -475,7 +477,7 @@ class App:
         self.showUnfollowers()
 
     def showUnfollowersOpen(self):
-        if self.sideName != "showUnfollowers" and self.sideName != None:
+        if self.sideName != "showUnfollowers" and self.sideName is not None:
             self.sideName = "showUnfollowers"
             self.closeSide()
             self.root.after(
@@ -549,12 +551,11 @@ class App:
             self.openSide()
 
     def removeFromWhitelist(self, user):
-
         u.removeFromWhiteList(user, infoF=self.info, errorF=self.error)
         self.editWhitelist()
 
     def editWhitelistOpen(self):
-        if self.sideName != "editWhitelist" and self.sideName != None:
+        if self.sideName != "editWhitelist" and self.sideName is not None:
             self.sideName = "editWhitelist"
             self.closeSide()
             self.root.after(
