@@ -70,7 +70,7 @@ jobs:
           
       # Compile the application for Windows
       - name: Compile for Windows
-        run: pyinstaller --onefile --windowed --name "InstaUnfollowerFinder" main.py
+        run: pyinstaller --onefile --windowed --icon=icon.ico --name "InstaUnfollowerFinder" main.py
 
       # Upload the compiled artifact
       - name: Upload Windows artifact
