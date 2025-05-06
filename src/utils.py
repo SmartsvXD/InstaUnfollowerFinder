@@ -6,7 +6,7 @@ from src.cli_utils import error, info
 if getattr(sys, "frozen", False):
     basePath = sys._MEIPASS
 else:
-    basePath = os.path.dirname(os.path.dirname(__file__))
+    basePath = os.path.dirname(__file__)
 
 
 def loadJSONs(
