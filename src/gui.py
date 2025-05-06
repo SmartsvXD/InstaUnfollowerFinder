@@ -129,9 +129,9 @@ class App:
             bg_color="#2C2C2C",
             justify="left",
         )
-        self.titleA.place(x=30, y=60 + self.TITLE_SHIFT, anchor="w")
-        self.titleB.place(x=30, y=127 + self.TITLE_SHIFT * 2, anchor="w")
-        self.titleC.place(x=30, y=194 + self.TITLE_SHIFT * 3, anchor="w")
+        self.titleA.place(x=30, y=70, anchor="w")
+        self.titleB.place(x=30, y=137 + self.TITLE_SHIFT, anchor="w")
+        self.titleC.place(x=30, y=204 + self.TITLE_SHIFT * 2, anchor="w")
 
         self.myName = tk.CTkLabel(
             self.root,
@@ -140,7 +140,7 @@ class App:
             bg_color="#2C2C2C",
             text_color="#a0a0a0",
         )
-        self.myName.place(x=265, y=150 + self.TITLE_SHIFT * 2 + 1, anchor="nw")
+        self.myName.place(x=265, y=160 + self.TITLE_SHIFT + 1, anchor="nw")
 
         self.findUnfollowersB = tk.CTkButton(
             self.root,
