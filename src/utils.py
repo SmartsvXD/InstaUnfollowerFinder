@@ -1,7 +1,7 @@
 import json
 import sys
 import os
-from src.instaunfollowerfinder.cli_utils import error, info
+from src.cli_utils import error, info
 
 if getattr(sys, "frozen", False):
     basePath = sys._MEIPASS

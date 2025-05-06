@@ -8,10 +8,10 @@ parser.add_argument(
 args = parser.parse_args()
 
 if args.terminal:
-    import src.instaunfollowerfinder.cli as cli
+    import src.cli as cli
 
     cli.main()
 else:
-    import src.instaunfollowerfinder.gui as gui
+    import src.gui as gui
 
     gui.main()

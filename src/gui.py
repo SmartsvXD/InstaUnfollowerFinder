@@ -3,13 +3,19 @@ from tkinter import filedialog, messagebox
 import webbrowser
 import os
 import math
-import src.instaunfollowerfinder.utils as u
+import src.utils as u
+from sys import platform
 
 
 class App:
     WIDTH = 510
     PLUSWIDTH = 510 + 487
     HEIGHT = 457
+
+    if platform == "win32":
+        TITLE_FONT_SIZE = 9
+    else:
+        TITLE_FONT_SIZE = 7.6
 
     STEPS_SLIDE_SIDE = 20
     DELAY_SLIDE_SIDE = 3
@@ -63,7 +69,7 @@ class App:
         self.titleA = tk.CTkLabel(
             self.root,
             text_color="magenta",
-            font=("Courier New", 9, "bold"),
+            font=("Courier New", self.TITLE_FONT_SIZE, "bold"),
             text="""
 ██╗███╗   ██╗███████╗████████╗ █████╗ 
 ██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗
@@ -79,7 +85,7 @@ class App:
         self.titleB = tk.CTkLabel(
             self.root,
             text_color="magenta",
-            font=("Courier New", 9, "bold"),
+            font=("Courier New", self.TITLE_FONT_SIZE, "bold"),
             text="""
 ██╗   ██╗███╗   ██╗███████╗ ██████╗ ██╗     ██╗      ██████╗ ██╗    ██╗███████╗██████╗ 
 ██║   ██║████╗  ██║██╔════╝██╔═══██╗██║     ██║     ██╔═══██╗██║    ██║██╔════╝██╔══██╗
@@ -95,7 +101,7 @@ class App:
         self.titleC = tk.CTkLabel(
             self.root,
             text_color="magenta",
-            font=("Courier New", 9, "bold"),
+            font=("Courier New", self.TITLE_FONT_SIZE, "bold"),
             text="""
 ███████╗██╗███╗   ██╗██████╗ ███████╗██████╗ 
 ██╔════╝██║████╗  ██║██╔══██╗██╔════╝██╔══██╗

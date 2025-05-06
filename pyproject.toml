@@ -1,0 +1,24 @@
+[project]
+name = "INSTA_UNFOLLOWER_FINDER"
+version = "0.2.2"
+authors = [
+    { name = "Simone" }
+]
+dependencies = [
+    "colorama", 
+    "customtkinter"
+]
+license = "GPL-3.0"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/SmartsvXD/InstaUnfollowerFinder"
+Issues = "https://github.com/SmartsvXD/InstaUnfollowerFinder/issues"
+
+[tool.setuptools.package-data]
+"INSTA_UNFOLLOWER_FINDER" = ["*.json", "*.spec"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

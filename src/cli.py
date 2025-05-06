@@ -8,8 +8,8 @@ except ImportError:
     input("(Press ENTER to exit)")
     exit()
 
-from src.instaunfollowerfinder.cli_utils import printColored, clearCLI, info
-from src.instaunfollowerfinder.utils import loadJSONs, compareLists, loadWhitelist
+from src.cli_utils import printColored, clearCLI, info
+from src.utils import loadJSONs, compareLists, loadWhitelist
 
 # Resets text color and style when the code exits
 atexit.register(lambda: print(Style.RESET_ALL))
