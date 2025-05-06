@@ -17,7 +17,7 @@ Homepage = "https://github.com/SmartsvXD/InstaUnfollowerFinder"
 Issues = "https://github.com/SmartsvXD/InstaUnfollowerFinder/issues"
 
 [tool.setuptools.package-data]
-"INSTA_UNFOLLOWER_FINDER" = ["*.json", "*.spec"]
+"INSTA_UNFOLLOWER_FINDER" = ["*.json", "*.spec", "*.ico"]
 
 [build-system]
 requires = ["setuptools"]
