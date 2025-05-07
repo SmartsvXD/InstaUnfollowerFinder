@@ -4,5 +4,7 @@ whitelist.json
 __pycache__
 .DS_Store
 .venv
-build
 dist
+build
+pyrightconfig.json
+*.egg-info/

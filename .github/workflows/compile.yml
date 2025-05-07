@@ -22,7 +22,7 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install .
           pip install pyinstaller
       # Compile the application for macOS
       - name: Compile for macOS
@@ -65,12 +65,12 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install .
           pip install pyinstaller
           
       # Compile the application for Windows
       - name: Compile for Windows
-        run: pyinstaller --onefile --windowed --name "InstaUnfollowerFinder" main.py
+        run: pyinstaller --onefile --windowed --icon=icon.ico --add-data "icon.ico;." --name "InstaUnfollowerFinder" main.py
 
       # Upload the compiled artifact
       - name: Upload Windows artifact

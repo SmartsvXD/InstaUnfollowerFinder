@@ -1,23 +1,89 @@
 # Instagram Unfollower Finder
 
-Easly identify the people you follow but don't follow you back\
-**NO PASSWORD OR USERNAME REQUIRED!!**
+A lightweight tool that helps you manage your Instagram connections efficiently.
 
-## ⁉️ What is this?
+Easily identify the people you follow but who don't follow you back —  
+**No password or username required, and 100% privacy-friendly!**
 
-Meta lets you download your personal data, like your posts, your connections, the followers list, ecc.. By following the quick guide you will download only the follower and following lists. This repository will then use that data to identify the people you follow but don't follow you back by comparing your followers and following lists.
+## ❓ What is this?
+
+Instagram (via Meta) allows you to download your personal data — including your followers and following lists.  
+This tool compares those lists locally to show you who doesn’t follow you back. It’s fast, simple, and keeps your data safe on your device.
 
 ## 📗 Quick Guide
 
-### Step 0: Install Python (if necessary)
+### Run Compiled
+
+#### Step 1: Download the app
+
+- Download the correct compiled version for your system from [GitHub Releases](https://github.com/SmartsvXD/InstaUnfollowerFinder/releases).
+- Install and run the app.
+
+#### Step 2: Find Unfollowers
+
+- Click on **"Open Meta Account Center"**.
+- Download Instagram information (explained below).
+- Click on **"Find Unfollowers"**, and select `followers.json` and `following_1.json` from the folder `connections/followers_and_following` inside the folder you downloaded from Instagram (once you have extracted the ZIP file). If everything is done correctly it should show the list of accounts.
+
+#### Step 3: Extra Features
+
+- By clicking on the username of the unfollower you can open their Instagram page on your default browser.
+- By clicking on the blue plus on the left of each username you can add it to the whitelist.
+
+### Run Raw Code
+
+#### Step 0: Install Python (if necessary)
 
 - If you don’t have Python installed, you can download it from the [official Python website](https://www.python.org/).
 
-### Step 1: Clone the repository
+#### Step 1: Clone the repository
 
 - Clone the repository.
 
-### Step 2: Request Instagram account information
+#### Step 2: Download Instagram information
+
+- Read **How to Request and Download Your Instagram Data** below.
+  
+#### Step 3a: Run the code with the GUI
+
+- Move to the cloned repository folder with  
+
+  ``` bash
+  cd path/to/InstaUnfollowerFinder
+  ```
+
+- Run `main.py` with  
+
+  ``` bash
+  python3 main.py
+  ```
+
+- Then follow **Step 2: Find Unfollowers** from the **Run Compiled** section.
+
+#### Step 3b: Run the code in the terminal
+
+- Open  
+
+  ``` text
+  ~/connections/followers_and_following
+  ```
+
+- Move `followers.json` and `following_1.json` in the cloned repository folder.
+- Move to the cloned repository folder with  
+
+  ``` bash
+  cd path/to/InstaUnfollowerFinder
+  ```
+
+- Run `main.py` with  
+
+  ``` bash
+  python3 main.py -t
+  ```
+
+  and select **"Find unfollowers"**, if everything is done correctly it should print the list of accounts.
+
+### How to Request and Download Your Instagram Data
 
 - Open Instagram on your browser (make sure you're logged in).
 - Click on **"More"**, in the lower left corner of the screen.
@@ -35,14 +101,8 @@ Meta lets you download your personal data, like your posts, your connections, th
 - For **"Format"**, select **"JSON"**.
 - Click on **"Create files"**.
 - Wait while your information is being prepared. This may take a while, and Instagram will send you an email once it’s ready.
-  
-### Step 3: Download and run the code
-
-- Once the file is ready, click **"Download"** in the Accpunt Center page, insert your password if needed.
+- Once the file is ready, click **"Download"** in the Account Center page, insert your password if needed.
 - Unzip the downloaded file.
-- Open `~/connections/followers_and_following`.
-- Move `followers.json` and `following_1.json` in the cloned repository folder.
-- Run `main.py` and select **"Find unfollowers"**, if everything is done correctly it should print the list of accounts.
 
 ## 🔑 Privacy Note
 
