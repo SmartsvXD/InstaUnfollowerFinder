@@ -53,6 +53,8 @@ class App:
         self.root.title("InstaUnfollowerFinder")
         self.root.geometry(f"{self.WIDTH}x{self.HEIGHT}")
         self.root.resizable(False, False)
+        if platform == 'win32':
+            self.root.iconbitmap(os.path.join(u.basePath, "icon.ico"))
 
         self.frameA = tk.CTkLabel(
             self.root,
