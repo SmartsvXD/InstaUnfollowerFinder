@@ -25,7 +25,6 @@ This tool compares those lists locally to show you who doesn’t follow you back
 
 #### Step 2: Find Unfollowers
 
-- Click on **"Open Meta Account Center"**.
 - Download Instagram information (explained below).
 - Click on **"Find Unfollowers"**, and select `followers.json` and `following_1.json` from the folder `connections/followers_and_following` inside the folder you downloaded from Instagram (once you have extracted the ZIP file). If everything is done correctly it should show the list of accounts.
 
