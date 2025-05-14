@@ -89,7 +89,7 @@ This tool compares those lists locally to show you who doesn’t follow you back
 
 ### How to Request and Download Your Instagram Data
 
-- Open the InstaUnfollowerFinder app
+- Open the **InstaUnfollowerFinder** app.
 - Click on **"Open Meta Account Center"** this should open the Meta Account Center on your default browser.
 - Click on **"Your information and permissions"**.
 - Click on **"Download your information"**.
