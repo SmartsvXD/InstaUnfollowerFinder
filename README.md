@@ -21,7 +21,7 @@ This tool compares those lists locally to show you who doesn’t follow you back
 #### Step 1: Download the app
 
 - Download the correct compiled version for your system from [GitHub Releases](https://github.com/SmartsvXD/InstaUnfollowerFinder/releases).
-- Install and run the app.
+- Install and run the app (read the security note if necessary).
 
 #### Step 2: Find Unfollowers
 
