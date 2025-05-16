@@ -151,7 +151,7 @@ class App:
             anchor="nw",
             text_color="#f0f0f0",
             fg_color="#2c2c2c",
-            hover_color="#2c2c2c",
+            hover_color="#2c2c2c" if platform != "win32" else "#333333",
             corner_radius=0,
             command=self.showUnfollowersOpen,
             width=240,
@@ -164,7 +164,7 @@ class App:
             anchor="nw",
             text_color="#f0f0f0",
             fg_color="#2c2c2c",
-            hover_color="#2c2c2c",
+            hover_color="#2c2c2c" if platform != "win32" else "#333333",
             corner_radius=0,
             command=lambda: webbrowser.open(
                 "https://accountscenter.instagram.com/info_and_permissions/?theme=dark"
@@ -179,7 +179,7 @@ class App:
             anchor="nw",
             text_color="#f0f0f0",
             fg_color="#2c2c2c",
-            hover_color="#2c2c2c",
+            hover_color="#2c2c2c" if platform != "win32" else "#333333",
             corner_radius=0,
             command=self.openJSONs,
             width=240,
@@ -192,7 +192,7 @@ class App:
             anchor="nw",
             text_color="#f0f0f0",
             fg_color="#2c2c2c",
-            hover_color="#2c2c2c",
+            hover_color="#2c2c2c" if platform != "win32" else "#333333",
             corner_radius=0,
             command=self.editWhitelistOpen,
             width=240,
@@ -204,30 +204,31 @@ class App:
         self.loadJSONsB.place(x=50, y=330 + self.TITLE_SHIFT * 2, anchor="w")
         self.editWhitelistB.place(x=50, y=360 + self.TITLE_SHIFT * 2, anchor="w")
 
-        self.hoverLabel = tk.CTkLabel(
-            self.root,
-            text=">",
-            font=("Courier New", 18, "bold"),
-            text_color="gold",
-            bg_color="#2C2C2C",
-        )
-        self.hoverLabel.place_forget()
+        if (platform != "win32"):
+            self.hoverLabel = tk.CTkLabel(
+                self.root,
+                text=">",
+                font=("Courier New", 18, "bold"),
+                text_color="gold",
+                bg_color="#2C2C2C",
+            )
+            self.hoverLabel.place_forget()
 
-        self.findUnfollowersB.bind(
-            "<Enter>", lambda event: self.onEnterHoverLabel(event)
-        )
-        self.findUnfollowersB.bind("<Leave>", self.onLeaveHoverLabel)
+            self.findUnfollowersB.bind(
+                "<Enter>", lambda event: self.onEnterHoverLabel(event)
+            )
+            self.findUnfollowersB.bind("<Leave>", self.onLeaveHoverLabel)
 
-        self.opeMetaAccountCenterB.bind(
-            "<Enter>", lambda event: self.onEnterHoverLabel(event)
-        )
-        self.opeMetaAccountCenterB.bind("<Leave>", self.onLeaveHoverLabel)
+            self.opeMetaAccountCenterB.bind(
+                "<Enter>", lambda event: self.onEnterHoverLabel(event)
+            )
+            self.opeMetaAccountCenterB.bind("<Leave>", self.onLeaveHoverLabel)
 
-        self.loadJSONsB.bind("<Enter>", lambda event: self.onEnterHoverLabel(event))
-        self.loadJSONsB.bind("<Leave>", self.onLeaveHoverLabel)
+            self.loadJSONsB.bind("<Enter>", lambda event: self.onEnterHoverLabel(event))
+            self.loadJSONsB.bind("<Leave>", self.onLeaveHoverLabel)
 
-        self.editWhitelistB.bind("<Enter>", lambda event: self.onEnterHoverLabel(event))
-        self.editWhitelistB.bind("<Leave>", self.onLeaveHoverLabel)
+            self.editWhitelistB.bind("<Enter>", lambda event: self.onEnterHoverLabel(event))
+            self.editWhitelistB.bind("<Leave>", self.onLeaveHoverLabel)
 
         self.closeSideB = tk.CTkButton(
             self.root,
