@@ -65,5 +65,5 @@ jobs:
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows-compiled
+          name: windows-spec
           path: main.spec
