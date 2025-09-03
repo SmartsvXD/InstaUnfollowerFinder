@@ -414,6 +414,11 @@ class App:
                 x=55 + 487 + self.FRAME_SHIFT, y=45 + 25 * i, anchor="nw"
             )
 
+        def update():
+            return
+
+        self.updateSide = update
+
     def initVersionLabel(self):
         self.version = tk.CTkLabel(
             self.root,
