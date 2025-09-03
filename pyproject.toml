@@ -6,7 +6,8 @@ authors = [
 ]
 dependencies = [
     "colorama", 
-    "customtkinter"
+    "customtkinter",
+    "requests"
 ]
 license = "GPL-3.0"
 readme = "README.md"

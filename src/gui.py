@@ -17,8 +17,8 @@ class App:
         TITLE_FONT_SIZE = 8
         TITLE_SHIFT = 6
 
-        DELAY_SLIDE_SIDE = 1
-        STEPS_SLIDE_SIDE = 5
+        DELAY_SLIDE_SIDE = 0
+        STEPS_SLIDE_SIDE = 1
         EXTRA_DELAY_SLIDE_SIDE = 10
 
         EXTRA_FRAME = 1
@@ -493,6 +493,8 @@ class App:
         self.nextPageB.place(
             x=self.nPage.winfo_x() + self.nPage.winfo_width(), y=22, anchor="nw"
         )
+        
+        self.updateSide()
 
     def prevPage(self):
         if self.page == 0:
