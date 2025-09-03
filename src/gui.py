@@ -65,6 +65,21 @@ class App:
         self.initHoverLabel()
         self.initMainButtons()
         self.initSide()
+        
+        self.root.update()
+        
+        self.checkVersion()
+
+    def checkVersion(self):
+        newVersion = u.checkVersion()
+        if newVersion[0]:
+            risposta = messagebox.askyesno(
+                title="Update Available",
+                message=f"A new version is available!\n\n{newVersion[1]} -> {newVersion[2]}\n\nDo you want to visit the release page to download it?"
+            )
+            
+            if risposta:
+                webbrowser.open("https://github.com/SmartsvXD/InstaUnfollowerFinder/releases/latest")
 
     def updateFrame(self, flip):
         flop = not (flip)

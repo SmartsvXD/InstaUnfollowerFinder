@@ -1,8 +1,8 @@
 [project]
 name = "INSTA_UNFOLLOWER_FINDER"
-version = "0.2.2"
+version = "1.0.2-dev"
 authors = [
-    { name = "Simone" }
+    { name = "Simone Vinciguerra" }
 ]
 dependencies = [
     "colorama", 

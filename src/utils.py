@@ -2,6 +2,8 @@ import json
 import sys
 import os
 from src.cli_utils import error, info
+from importlib.metadata import version
+import requests
 
 if getattr(sys, "frozen", False):
     basePath = sys._MEIPASS
@@ -124,3 +126,13 @@ def removeFromWhiteList(name, infoF=info, errorF=error):
     whitelist.remove(name)
 
     saveWhitelist(whitelist)
+
+
+def checkVersion():
+    local_version = version("INSTA_UNFOLLOWER_FINDER") 
+    
+    response = requests.get("https://api.github.com/repos/SmartsvXD/InstaUnfollowerFinder/releases/latest")
+    response.raise_for_status()
+    latest_version = response.json()["tag_name"][1:]
+
+    return (latest_version != local_version and "dev" not in local_version, local_version, latest_version)

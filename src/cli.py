@@ -9,7 +9,7 @@ except ImportError:
     exit()
 
 from src.cli_utils import printColored, clearCLI, info
-from src.utils import loadJSONs, compareLists, loadWhitelist
+from src.utils import loadJSONs, compareLists, loadWhitelist, checkVersion
 
 # Resets text color and style when the code exits
 atexit.register(lambda: print(Style.RESET_ALL))
@@ -59,6 +59,11 @@ def main():
     prevInputInvalid = 0
     while 1:
         clearCLI()
+        
+        newVersion = checkVersion()
+        if newVersion[0]:
+            print(f"{Fore.GREEN}{Style.BRIGHT}A new version is available! {newVersion[1]} -> {newVersion[2]}{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}Download it using the link:{Fore.RESET}{Style.BRIGHT} https://github.com/SmartsvXD/InstaUnfollowerFinder/releases/latest {Style.RESET_ALL}\n")
 
         print(
             f"{Fore.MAGENTA}{Style.BRIGHT}Welcome to InstaUnfollowerFinder by Smartsv!{Style.RESET_ALL}\n"
