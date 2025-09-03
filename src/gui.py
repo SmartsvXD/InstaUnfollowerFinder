@@ -65,9 +65,10 @@ class App:
         self.initHoverLabel()
         self.initMainButtons()
         self.initSide()
-        
+        self.initVersionLabel()
+
         self.root.update()
-        
+
         self.checkVersion()
 
     def checkVersion(self):
@@ -75,11 +76,13 @@ class App:
         if newVersion[0]:
             risposta = messagebox.askyesno(
                 title="Update Available",
-                message=f"A new version is available!\n\n{newVersion[1]} -> {newVersion[2]}\n\nDo you want to visit the release page to download it?"
+                message=f"A new version is available!\n\n{newVersion[1]} -> {newVersion[2]}\n\nDo you want to visit the release page to download it?",
             )
-            
+
             if risposta:
-                webbrowser.open("https://github.com/SmartsvXD/InstaUnfollowerFinder/releases/latest")
+                webbrowser.open(
+                    "https://github.com/SmartsvXD/InstaUnfollowerFinder/releases/latest"
+                )
 
     def updateFrame(self, flip):
         flop = not (flip)
@@ -410,6 +413,16 @@ class App:
             self.sideGridBtns[i].place(
                 x=55 + 487 + self.FRAME_SHIFT, y=45 + 25 * i, anchor="nw"
             )
+
+    def initVersionLabel(self):
+        self.version = tk.CTkLabel(
+            self.root,
+            text=f"v{u.checkVersion()[1]}",
+            font=("Courier New", 12, "bold"),
+            bg_color="#2C2C2C",
+            text_color="#666666",
+        )
+        self.version.place(x=20, y=410, anchor="nw")
 
     # endregion
 
