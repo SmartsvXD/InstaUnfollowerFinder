@@ -23,7 +23,7 @@
 
 ## 🔒 Security Notice
 
-The compiled versions of this app are not digitally signed (the license is expensive and I'm poor 👍). This means both macOS and Windows may block the application when you try to open it, as the system doesn't recognize the developer. Here's how to bypass this and run the app safely.
+The compiled versions of this app are not digitally signed (the certificate is expensive and I'm poor 👍). This means both macOS and Windows may block the application when you try to open it, as the system doesn't recognize the developer. Here's how to bypass this and run the app safely.
 
 ### Running the App on Windows
 
