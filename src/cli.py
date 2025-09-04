@@ -49,7 +49,7 @@ def printWhitelist():
 
 def about():
     printColored(
-        "Code written by Smartsv (SmartsvXD on Github)\n\nItaly, 2024-2025", Fore.GREEN
+        "Code written by SmartsvXD\n\nItaly, 2024-2025", Fore.GREEN
     )
 
 
@@ -78,7 +78,7 @@ def main():
             )
 
         print(
-            f"{Fore.MAGENTA}{Style.BRIGHT}Welcome to InstaUnfollowerFinder by Smartsv!{Style.RESET_ALL}{Fore.LIGHTBLACK_EX}{Style.DIM} v{newVersion[1]}{Style.RESET_ALL}\n"
+            f"{Fore.MAGENTA}{Style.BRIGHT}Welcome to InstaUnfollowerFinder by SmartsvXD!{Style.RESET_ALL}{Fore.LIGHTBLACK_EX}{Style.DIM} v{newVersion[1]}{Style.RESET_ALL}\n"
         )
 
         # Print all the actions
