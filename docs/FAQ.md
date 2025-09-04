@@ -16,7 +16,7 @@ Yes, all processing is done locally. No data is sent online, and no Instagram cr
 
 ### 4. What version of Python do I need?
 
-Python 3.8 or newer is recommended.
+Python 3.10 or newer is recommended.
 
 ### 5. How do I update the app?
 

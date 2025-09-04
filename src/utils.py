@@ -131,8 +131,11 @@ def removeFromWhiteList(name, infoF=info, errorF=error):
 def checkVersion():
     local_version = version("INSTA_UNFOLLOWER_FINDER") 
     
+    if any(x in local_version for x in ["dev", "post", "+"]):
+        return (False, local_version, local_version)
+    
     response = requests.get("https://api.github.com/repos/SmartsvXD/InstaUnfollowerFinder/releases/latest")
     response.raise_for_status()
     latest_version = response.json()["tag_name"][1:]
 
-    return (latest_version != local_version and "dev" not in local_version, local_version, latest_version)
+    return (latest_version != local_version, local_version, latest_version)

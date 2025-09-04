@@ -1,6 +1,9 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "INSTA_UNFOLLOWER_FINDER"
-version = "1.0.2-dev"
 authors = [
     { name = "Simone Vinciguerra" }
 ]
@@ -12,6 +15,7 @@ dependencies = [
 license = "GPL-3.0"
 readme = "README.md"
 requires-python = ">=3.10"
+dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/SmartsvXD/InstaUnfollowerFinder"
@@ -20,6 +24,6 @@ Issues = "https://github.com/SmartsvXD/InstaUnfollowerFinder/issues"
 [tool.setuptools.package-data]
 "INSTA_UNFOLLOWER_FINDER" = ["*.json", "*.spec", "*.ico"]
 
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "node-and-date"
